@@ -1,5 +1,5 @@
 import random
-
+import math
 
 def is_prime(n, k=40):
     if n < 2:
@@ -28,11 +28,10 @@ def is_prime(n, k=40):
                 break
         else:
             return False
-
     return True
 
 
-def generate_large_prime(bits=16, k=40):
+def generate_large_prime(bits=8, k=40):
     while True:
         num = random.getrandbits(bits)
         num = random.randint(2**(bits-1), 2**bits - 1)
@@ -42,6 +41,22 @@ def generate_large_prime(bits=16, k=40):
         if is_prime(num):
             return num
 
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def find_public_key(phi):
+    for num in range(3, phi):
+        if gcd(num, phi) == 1:
+            return num
+        
+def find_private_key(phi, e):
+    p = phi+1
+    while True:
+        if (e * p) % phi == 1:
+            return p
+        p += 1
 
 p = q = 0
 
@@ -51,3 +66,13 @@ while p == q:
 
 n = p*q
 phi = (p - 1) * (q - 1)
+
+e = find_public_key(phi)
+d = find_private_key(phi, e)
+
+print(p)
+print(q)
+print(n)
+print(phi)
+print(e)
+print(d)
