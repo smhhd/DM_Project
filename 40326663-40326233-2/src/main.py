@@ -58,21 +58,28 @@ def find_private_key(phi, e):
             return p
         p += 1
 
-p = q = 0
+def rsa_key_gen():
+    p = q = 0
 
-while p == q:
-    p = generate_large_prime()
-    q = generate_large_prime()
+    while p == q:
+        p = generate_large_prime()
+        q = generate_large_prime()
 
-n = p*q
-phi = (p - 1) * (q - 1)
+    n = p*q
+    phi = (p - 1) * (q - 1)
 
-e = find_public_key(phi)
-d = find_private_key(phi, e)
+    e = find_public_key(phi)
+    d = find_private_key(phi, e)
 
-print(p)
-print(q)
-print(n)
-print(phi)
-print(e)
-print(d)
+    return (n, e), (n, d)
+
+def convert_message_to_ascii(message):
+    to_ascii = []
+    for c in message:
+        to_ascii.append(ord(c))
+    return to_ascii
+
+def convert_ascii_to_message(ascii_list):
+    message = ""
+    for num in ascii_list:
+        message += chr(num)
