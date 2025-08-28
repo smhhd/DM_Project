@@ -1,6 +1,7 @@
 import random
 import math
 
+
 def is_prime(n, k=40):
     if n < 2:
         return False
@@ -41,22 +42,26 @@ def generate_large_prime(bits=8, k=40):
         if is_prime(num):
             return num
 
+
 def gcd(a, b):
     while b:
         a, b = b, a % b
     return a
 
+
 def find_public_key(phi):
     for num in range(3, phi):
         if gcd(num, phi) == 1:
             return num
-        
+
+
 def find_private_key(phi, e):
     p = phi+1
     while True:
         if (e * p) % phi == 1:
             return p
         p += 1
+
 
 def rsa_key_gen():
     p = q = 0
@@ -73,13 +78,42 @@ def rsa_key_gen():
 
     return (n, e), (n, d)
 
+
 def convert_message_to_ascii(message):
     to_ascii = []
     for c in message:
         to_ascii.append(ord(c))
     return to_ascii
 
+
 def convert_ascii_to_message(ascii_list):
     message = ""
     for num in ascii_list:
         message += chr(num)
+    return message
+
+
+def encrypt(m, pub_key):
+    n, e = pub_key
+    return pow(m, e, n)
+
+
+def decrypt(c, pv_key):
+    n, d = pv_key
+    return pow(c, d, n)
+
+
+def main():
+    public, private = rsa_key_gen()
+    message = input("Please enter your message: ")
+    ascii_message = convert_message_to_ascii(message)
+    encrypted_msg_ascii = [encrypt(ch, public) for ch in ascii_message]
+    encrypted_msg = convert_ascii_to_message(encrypted_msg_ascii)
+    print(f"The encrypted message is: {encrypted_msg}")
+    decrypted_msg_ascii = [decrypt(ch, private) for ch in encrypted_msg_ascii]
+    decrypted_msg = convert_ascii_to_message(decrypted_msg_ascii)
+    print(f"The decrypted message is: {decrypted_msg}")
+
+
+if __name__ == "__main__":
+    main()
