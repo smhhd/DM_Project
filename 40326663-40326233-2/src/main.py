@@ -1,5 +1,6 @@
 import random
 
+
 def is_prime(n, k=40):
     if n < 2:
         return False
@@ -7,17 +8,17 @@ def is_prime(n, k=40):
         return True
     if n % 2 == 0:
         return False
-    
+
     s = 0
     d = n - 1
     while d % 2 == 0:
         s += 1
         d //= 2
 
-    for i in range (k):
+    for i in range(k):
         a = random.randint(2, n - 2)
         x = pow(a, d, n)
-        
+
         if x == 1 or x == n - 1:
             continue
 
@@ -27,6 +28,23 @@ def is_prime(n, k=40):
                 break
         else:
             return False
-    
+
     return True
 
+
+def generate_large_prime(bits=16, k=40):
+    while True:
+        num = random.getrandbits(bits)
+        num = random.randint(2**(bits-1), 2**bits - 1)
+        if num % 2 == 0:
+            num += 1
+
+        if is_prime(num):
+            return num
+
+
+p = q = 0
+
+while p == q:
+    p = generate_large_prime()
+    q = generate_large_prime()
