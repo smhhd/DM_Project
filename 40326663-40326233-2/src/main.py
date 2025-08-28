@@ -48,3 +48,6 @@ p = q = 0
 while p == q:
     p = generate_large_prime()
     q = generate_large_prime()
+
+n = p*q
+phi = (p - 1) * (q - 1)
