@@ -108,8 +108,7 @@ def main():
     message = input("Please enter your message: ")
     ascii_message = convert_message_to_ascii(message)
     encrypted_msg_ascii = [encrypt(ch, public) for ch in ascii_message]
-    encrypted_msg = convert_ascii_to_message(encrypted_msg_ascii)
-    print(f"The encrypted message is: {encrypted_msg}")
+    print(f"The encrypted message is: {encrypted_msg_ascii}")
     decrypted_msg_ascii = [decrypt(ch, private) for ch in encrypted_msg_ascii]
     decrypted_msg = convert_ascii_to_message(decrypted_msg_ascii)
     print(f"The decrypted message is: {decrypted_msg}")
