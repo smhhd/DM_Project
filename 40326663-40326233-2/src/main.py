@@ -32,7 +32,7 @@ def is_prime(n, k=40):
     return True
 
 
-def generate_large_prime(bits=8, k=40):
+def generate_large_prime(bits=16, k=40):
     while True:
         num = random.getrandbits(bits)
         num = random.randint(2**(bits-1), 2**bits - 1)
@@ -49,6 +49,21 @@ def gcd(a, b):
     return a
 
 
+def mod_inverse(e, phi):
+    x0, x1 = 1, 0
+    a, b = e, phi
+
+    while b != 0:
+        q = a // b
+        a, b = b, a % b
+        x0, x1 = x1, x0 - q * x1
+    
+    if a != 1:
+        raise ValueError("It is impossible to find mod inverse in this situation")
+    
+    return x0 % phi
+
+
 def find_public_key(phi):
     for num in range(3, phi):
         if gcd(num, phi) == 1:
@@ -56,11 +71,7 @@ def find_public_key(phi):
 
 
 def find_private_key(phi, e):
-    p = phi+1
-    while True:
-        if (e * p) % phi == 1:
-            return p
-        p += 1
+    return mod_inverse(e, phi)
 
 
 def rsa_key_gen():
